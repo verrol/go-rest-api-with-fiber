@@ -7,7 +7,7 @@ func GetAllProducts(c *fiber.Ctx) error {
 }
 
 func GetProduct(c *fiber.Ctx) error {
-	return c.SendString("got product")
+	return c.SendString("got product with id " + c.Params("id"))
 }
 
 func CreateProduct(c *fiber.Ctx) error {
@@ -15,5 +15,5 @@ func CreateProduct(c *fiber.Ctx) error {
 }
 
 func DeleteProduct(c *fiber.Ctx) error {
-	return c.SendString("deleted product")
+	return c.SendString("deleted product with id " + c.Params("id"))
 }
