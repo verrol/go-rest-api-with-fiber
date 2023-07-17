@@ -1,0 +1,25 @@
+version: '3'
+
+interval: 5s
+
+tasks:
+  dev:
+    sources:
+      - go.mod
+      - ./**/*.go
+    cmds:
+      - go mod tidy
+      - go build -o app && ./app
+      - defer: { task: cleanup }
+
+  cleanup: killall -9 app || true
+
+  build:
+    cmds:
+      - docker compose build
+
+  up:
+    deps:
+      - task: build
+    cmds:
+      - docker compose up
