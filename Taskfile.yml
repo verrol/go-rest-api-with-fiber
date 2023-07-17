@@ -4,6 +4,9 @@ interval: 5s
 
 tasks:
   dev:
+    deps:
+      - task: up-dev
+        silent: true
     sources:
       - go.mod
       - ./**/*.go
@@ -14,6 +17,10 @@ tasks:
 
   cleanup: killall -9 app || true
 
+  up-dev:
+    cmds:
+      - docker compose up -d db
+    
   build:
     cmds:
       - docker compose build
@@ -22,4 +29,8 @@ tasks:
     deps:
       - task: build
     cmds:
-      - docker compose up
+      - docker compose up -d
+
+  down:
+    cmds:
+      - docker compose down
