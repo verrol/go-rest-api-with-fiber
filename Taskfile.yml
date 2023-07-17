@@ -10,6 +10,7 @@ tasks:
     sources:
       - go.mod
       - ./**/*.go
+      - .env
     cmds:
       - go mod tidy
       - go build -o app && ./app

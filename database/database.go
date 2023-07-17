@@ -42,19 +42,3 @@ func Connect() error {
 
 	return nil
 }
-
-func CreateProductTable() {
-	createTableSQL := `CREATE TABLE IF NOT EXISTS products (
-		id SERIAL PRIMARY KEY,
-		name VARCHAR(255) NOT NULL,
-		price INT NOT NULL,
-		quantity INT NOT NULL
-		);`
-	_, err := DB.Exec(createTableSQL)
-	if err != nil {
-		log.Error(err)
-		return
-	}
-
-	log.Info("product table created")
-}

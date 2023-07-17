@@ -6,6 +6,7 @@ require (
 	github.com/charmbracelet/log v0.2.2
 	github.com/gofiber/fiber v1.14.6
 	github.com/gofiber/fiber/v2 v2.48.0
+	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.9
 )
 
