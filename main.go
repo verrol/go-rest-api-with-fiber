@@ -25,6 +25,7 @@ func main() {
 
 	db := database.DB
 	ph := handler.NewProductHandlers(db)
+
 	router.SetupRoutes(app, ph)
 
 	serverPort := config.Config("SERVER_PORT")
