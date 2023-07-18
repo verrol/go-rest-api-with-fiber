@@ -32,7 +32,7 @@ GET {{base_url}}/{{endpoint}}/{{id}}
 Authorization: Basic {{username}}:{{password}}
 
 ### - get Product with id
-@id = 1
+@id = 6
 DELETE {{base_url}}/{{endpoint}}/{{id}}
 Authorization: Basic {{username}}:{{password}}
 

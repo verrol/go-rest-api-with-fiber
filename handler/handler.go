@@ -48,7 +48,7 @@ func GetAllProducts(c *fiber.Ctx) error {
 		})
 	}
 
-	return err
+	return nil
 }
 
 func GetProduct(c *fiber.Ctx) error {
@@ -95,7 +95,7 @@ func GetProduct(c *fiber.Ctx) error {
 			"message": err,
 		})
 	}
-	return err
+	return nil
 }
 
 func CreateProduct(c *fiber.Ctx) error {
@@ -132,9 +132,33 @@ func CreateProduct(c *fiber.Ctx) error {
 		})
 	}
 
-	return err
+	return nil
 }
 
 func DeleteProduct(c *fiber.Ctx) error {
-	return c.SendString("deleted product with id " + c.Params("id"))
+	id := c.Params("id")
+	query := `DELETE FROM products WHERE id=$1`
+	_, err := database.DB.Exec(query, id)
+	if err != nil {
+		log.Error("Error while deleting product", "err", err, "id", id)
+		return c.Status(http.StatusInternalServerError).JSON(&fiber.Map{
+			"success": false,
+			"message": err,
+		})
+	}
+
+	log.Info("Product deleted", "id", id)
+	err = c.JSON(&fiber.Map{
+		"success": true,
+		"message": "Product deleted successfully",
+	})
+	if err != nil {
+		log.Error("Error while sending product", "err", err)
+		return c.Status(http.StatusInternalServerError).JSON(&fiber.Map{
+			"success": false,
+			"message": err,
+		})
+	}
+	
+	return nil
 }
