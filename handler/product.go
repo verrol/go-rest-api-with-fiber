@@ -1,18 +1,26 @@
 package handler
 
 import (
+	"database/sql"
 	"net/http"
 
 	"github.com/charmbracelet/log"
 	"github.com/gofiber/fiber/v2"
-	"github.com/verrol/go-rest-api-with-fiber/database"
 	"github.com/verrol/go-rest-api-with-fiber/model"
 )
 
-func GetAllProducts(c *fiber.Ctx) error {
+type ProductHandlers struct {
+	db *sql.DB
+}
+
+func NewProductHandlers(db *sql.DB) *ProductHandlers {
+	return &ProductHandlers{db}
+}
+
+func (ph *ProductHandlers) GetAllProducts(c *fiber.Ctx) error {
 	// query product table in the db
 	query := `SELECT * FROM products order by name`
-	rows, err := database.DB.Query(query)
+	rows, err := ph.db.Query(query)
 	if err != nil {
 		return c.SendStatus(http.StatusInternalServerError)
 	}
@@ -35,11 +43,11 @@ func GetAllProducts(c *fiber.Ctx) error {
 	return c.JSON(result)
 }
 
-func GetProduct(c *fiber.Ctx) error {
+func (ph *ProductHandlers) GetProduct(c *fiber.Ctx) error {
 	id := c.Params("id")
 	product := model.Product{}
 	query := `SELECT * FROM products WHERE id=$1`
-	row, err := database.DB.Query(query, id)
+	row, err := ph.db.Query(query, id)
 	if err != nil {
 		log.Info("query error", "id", id, "err", err)
 		return c.SendStatus(http.StatusInternalServerError)
@@ -63,7 +71,7 @@ func GetProduct(c *fiber.Ctx) error {
 	return c.JSON(product)
 }
 
-func CreateProduct(c *fiber.Ctx) error {
+func (ph *ProductHandlers) CreateProduct(c *fiber.Ctx) error {
 	p := new(model.Product)
 	if err := c.BodyParser(p); err != nil {
 		log.Error("Error while parsing product", "err", err)
@@ -72,7 +80,7 @@ func CreateProduct(c *fiber.Ctx) error {
 
 	log.Info("Product parsed from request", "name", p.Name)
 	query := `INSERT INTO products (name, price, quantity, category, description) VALUES ($1, $2, $3, $4, $5) RETURNING id`
-	err := database.DB.QueryRow(query, p.Name, p.Price, p.Quantity, p.Category, p.Description).Scan(&p.ID)
+	err := ph.db.QueryRow(query, p.Name, p.Price, p.Quantity, p.Category, p.Description).Scan(&p.ID)
 	if err != nil {
 		log.Error("Error while inserting product", "err", err)
 		return c.SendStatus(http.StatusInternalServerError)
@@ -82,10 +90,10 @@ func CreateProduct(c *fiber.Ctx) error {
 	return c.JSON(p)
 }
 
-func DeleteProduct(c *fiber.Ctx) error {
+func (ph *ProductHandlers) DeleteProduct(c *fiber.Ctx) error {
 	id := c.Params("id")
 	query := `DELETE FROM products WHERE id=$1`
-	_, err := database.DB.Exec(query, id)
+	_, err := ph.db.Exec(query, id)
 	if err != nil {
 		log.Error("Error while deleting product", "err", err, "id", id)
 		return c.SendStatus(http.StatusInternalServerError)

@@ -7,6 +7,7 @@ import (
 	"github.com/gofiber/fiber/v2/middleware/monitor"
 	"github.com/verrol/go-rest-api-with-fiber/config"
 	"github.com/verrol/go-rest-api-with-fiber/database"
+	"github.com/verrol/go-rest-api-with-fiber/handler"
 	"github.com/verrol/go-rest-api-with-fiber/router"
 )
 
@@ -22,7 +23,9 @@ func main() {
 	app.Use("/metrics", monitor.New())
 	app.Use(logger.New())
 
-	router.SetupRoutes(app)
+	db := database.DB
+	ph := handler.NewProductHandlers(db)
+	router.SetupRoutes(app, ph)
 
 	serverPort := config.Config("SERVER_PORT")
 	log.Info("Starting server", "port", serverPort)
