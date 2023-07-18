@@ -99,7 +99,40 @@ func GetProduct(c *fiber.Ctx) error {
 }
 
 func CreateProduct(c *fiber.Ctx) error {
-	return c.SendString("created product")
+	p := new(model.Product)
+	if err := c.BodyParser(p); err != nil {
+		log.Error("Error while parsing product", "err", err)
+		return c.Status(http.StatusInternalServerError).JSON(&fiber.Map{
+			"success": false,
+			"message": err,
+		})
+	}
+	log.Info("Product parsed", "name", p.Name)
+	query := `INSERT INTO products (name, price, quantity, category, description) VALUES ($1, $2, $3, $4, $5) RETURNING id`
+	err := database.DB.QueryRow(query, p.Name, p.Price, p.Quantity, p.Category, p.Description).Scan(&p.ID)
+	if err != nil {
+		log.Error("Error while inserting product", "err", err)
+		return c.Status(http.StatusInternalServerError).JSON(&fiber.Map{
+			"success": false,
+			"message": err,
+		})
+	}
+
+	log.Info("Product inserted", "id", p.ID)
+	err = c.JSON(&fiber.Map{
+		"success": true,
+		"data":    p,
+		"message": "Product created successfully",
+	})
+	if err != nil {
+		log.Error("Error while sending product", "err", err)
+		return c.Status(http.StatusInternalServerError).JSON(&fiber.Map{
+			"success": false,
+			"message": err,
+		})
+	}
+
+	return err
 }
 
 func DeleteProduct(c *fiber.Ctx) error {
