@@ -10,6 +10,7 @@ GET {{base_url}}/{{endpoint}}
 Authorization: Basic {{username}}:{{password}}
 
 ### - create a Product
+# @name product
 POST {{base_url}}/{{endpoint}}
 Authorization: Basic {{username}}:{{password}}
 content-type: application/json
@@ -27,11 +28,11 @@ GET {{base_url}}/{{endpoint}}
 Authorization: Basic {{username}}:{{password}}
 
 ### - get Product with id
-GET {{base_url}}/{{endpoint}}/2
+GET {{base_url}}/{{endpoint}}/{{product.response.body.$.id}}
 Authorization: Basic {{username}}:{{password}}
 
 ### - delete Product with id
-DELETE {{base_url}}/{{endpoint}}/7
+DELETE {{base_url}}/{{endpoint}}/{{product.response.body.$.id}}
 Authorization: Basic {{username}}:{{password}}
 
 ### - get all Products
