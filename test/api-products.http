@@ -1,0 +1,42 @@
+# test file for Products
+###
+@base_url = http://localhost:3000
+@endpoint = api
+@username = admin
+@password = admin
+
+### - get all Products
+GET {{base_url}}/{{endpoint}}
+Authorization: Basic {{username}}:{{password}}
+
+### - create a Product
+POST {{base_url}}/{{endpoint}}
+Authorization: Basic {{username}}:{{password}}
+content-type: application/json
+
+{
+  "category": "Electronics",
+  "description": "A very nice TV",
+  "name": "Flat Screen TV",
+  "price": 989,
+  "quantity": 11
+}
+
+### - get all Products
+GET {{base_url}}/{{endpoint}}
+Authorization: Basic {{username}}:{{password}}
+
+### - get Product with id
+@id = 1
+GET {{base_url}}/{{endpoint}}/{{id}}
+Authorization: Basic {{username}}:{{password}}
+
+### - get Product with id
+@id = 1
+DELETE {{base_url}}/{{endpoint}}/{{id}}
+Authorization: Basic {{username}}:{{password}}
+
+### - get all Products
+GET {{base_url}}/{{endpoint}}
+Authorization: Basic {{username}}:{{password}}
+

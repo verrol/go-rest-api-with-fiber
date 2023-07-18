@@ -46,3 +46,7 @@ In the project directory, run the following to watch for changes and rerun the t
 Use the task 'up' to both build the Docker container and then start the application with all depending services.
 
 `task up`
+
+## Monitoring
+
+This app uses Fiber's Monitor Middle. Access monitor graphs at http://<your-host/ip>:<port>/metrics.
