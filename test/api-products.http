@@ -27,13 +27,11 @@ GET {{base_url}}/{{endpoint}}
 Authorization: Basic {{username}}:{{password}}
 
 ### - get Product with id
-@id = 1
-GET {{base_url}}/{{endpoint}}/{{id}}
+GET {{base_url}}/{{endpoint}}/2
 Authorization: Basic {{username}}:{{password}}
 
-### - get Product with id
-@id = 6
-DELETE {{base_url}}/{{endpoint}}/{{id}}
+### - delete Product with id
+DELETE {{base_url}}/{{endpoint}}/7
 Authorization: Basic {{username}}:{{password}}
 
 ### - get all Products
