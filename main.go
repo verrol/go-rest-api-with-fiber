@@ -23,7 +23,7 @@ func main() {
 	app.Use("/metrics", monitor.New())
 	app.Use(logger.New())
 
-	db := database.DB
+	db := database.GetDbConnection()
 	ph := handler.NewProductHandlers(db)
 
 	router.SetupRoutes(app, ph)

@@ -1,20 +1,20 @@
 package handler
 
 import (
-	"database/sql"
 	"net/http"
 
 	"github.com/charmbracelet/log"
 	"github.com/gofiber/fiber/v2"
 	"github.com/verrol/go-rest-api-with-fiber/model"
 	"github.com/verrol/go-rest-api-with-fiber/respository"
+	"xorm.io/xorm"
 )
 
 type ProductHandlers struct {
 	repo respository.ProductRepository
 }
 
-func NewProductHandlers(db *sql.DB) *ProductHandlers {
+func NewProductHandlers(db *xorm.Engine) *ProductHandlers {
 	return &ProductHandlers{repo: respository.NewProductRepository(db)}
 }
 
@@ -35,7 +35,7 @@ func (ph *ProductHandlers) GetProduct(c *fiber.Ctx) error {
 		return c.SendStatus(http.StatusInternalServerError)
 	}
 
-	product, err := ph.repo.GetProduct(id)
+	product, err := ph.repo.GetProduct(int64(id))
 
 	if err != nil {
 		log.Error("Error while trying to retrieve product", "id", id, "err", err)
@@ -71,7 +71,7 @@ func (ph *ProductHandlers) DeleteProduct(c *fiber.Ctx) error {
 		return c.SendStatus(http.StatusInternalServerError)
 	}
 
-	err = ph.repo.DeleteProduct(id)
+	err = ph.repo.DeleteProduct(int64(id))
 	if err != nil {
 		log.Error("Error while deleting product", "err", err, "id", id)
 		return c.SendStatus(http.StatusInternalServerError)
