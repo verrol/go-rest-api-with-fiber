@@ -7,4 +7,5 @@ import (
 
 func setupAuthRoutes(router fiber.Router, authHandlers *handler.AuthHandlers) {
 	router.Post("/signup", authHandlers.Register)
+	router.Post("/signin", authHandlers.Login)
 }

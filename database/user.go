@@ -7,7 +7,7 @@ import (
 
 type UserInfo struct {
 	Id       string `xorm:"pk"`
-	Username string
+	Username string `xorm:"unique"`
 	Password string
 	Roles    string // comma separated roles
 	Created  string `xorm:"created"`
