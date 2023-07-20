@@ -6,9 +6,12 @@ require (
 	github.com/charmbracelet/log v0.2.2
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/gofiber/fiber/v2 v2.48.0
+	github.com/google/uuid v1.3.0
 	github.com/joho/godotenv v1.5.1
 	github.com/lib/pq v1.10.9
 	github.com/mattn/go-sqlite3 v1.14.9
+	golang.org/x/crypto v0.7.0
+	golang.org/x/sync v0.0.0-20201020160332-67f06af15bc9
 	xorm.io/xorm v1.3.2
 )
 
@@ -19,7 +22,6 @@ require (
 	github.com/go-logfmt/logfmt v0.6.0 // indirect
 	github.com/goccy/go-json v0.8.1 // indirect
 	github.com/golang/snappy v0.0.4 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/klauspost/compress v1.16.3 // indirect
 	github.com/lucasb-eyer/go-colorful v1.2.0 // indirect

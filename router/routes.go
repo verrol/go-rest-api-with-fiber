@@ -7,9 +7,11 @@ import (
 	"github.com/verrol/go-rest-api-with-fiber/middleware"
 )
 
-func SetupRoutes(app *fiber.App, productHandlers *handler.ProductHandlers) {
+func SetupRoutes(app *fiber.App, authHandlers *handler.AuthHandlers, productHandlers *handler.ProductHandlers) {
+	// auth routes don't need security
+	setupAuthRoutes(app, authHandlers)
 	// add auth middleware for the api routes
-	router := app.Group("/api", requestid.New(), middleware.AuthReq())
+	api := app.Group("/api", requestid.New(), middleware.AuthReq())
 
-	setupProductRoutes(router, productHandlers)
+	setupProductRoutes(api, productHandlers)
 }

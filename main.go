@@ -24,9 +24,10 @@ func main() {
 	app.Use(logger.New())
 
 	db := database.GetDbConnection()
+	ah := handler.NewAuthHandlers(db)
 	ph := handler.NewProductHandlers(db)
 
-	router.SetupRoutes(app, ph)
+	router.SetupRoutes(app, ah, ph)
 
 	serverPort := config.Config("SERVER_PORT")
 	log.Info("Starting server", "port", serverPort)

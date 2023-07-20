@@ -8,6 +8,7 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/lib/pq"
 	_ "github.com/mattn/go-sqlite3"
+	"golang.org/x/sync/errgroup"
 	"xorm.io/xorm"
 
 	"github.com/charmbracelet/log"
@@ -59,8 +60,22 @@ func Connect() error {
 
 	db.ShowSQL(true)
 
-	err = CreateProductTable(db)
-	if err != nil {
+	// create all tables
+	tableFuncs := []func(*xorm.Engine) error{
+		CreateUserTable,
+		CreateProductTable,
+	}
+
+	g := new(errgroup.Group)
+	for _, f := range tableFuncs {
+		f := f
+		g.Go(func() error {
+			return f(db)
+		})
+	}
+
+	if err = g.Wait(); err != nil {
+		log.Error("error while creating tables", "error", err)
 		return err
 	}
 
